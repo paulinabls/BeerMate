@@ -1,0 +1,9 @@
+/build
+.gradle
+/local.properties
+/.idea/*
+!/.idea/inspectionProfiles
+/.idea/inspectionProfiles/*
+!/.idea/inspectionProfiles/Project_Default.xml
+*.iml
+/captures

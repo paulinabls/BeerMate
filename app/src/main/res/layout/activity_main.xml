@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.psc.beermate.presentation.view.MainActivity">
+
+    <EditText
+        android:id="@+id/search_query_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/loading_spinner"
+        android:backgroundTint="@color/colorPrimary"
+        android:hint="Type here to filter by name"
+        android:imeOptions="flagNoExtractUi"
+        android:inputType="textNoSuggestions"
+        android:maxLines="1"
+        android:nextFocusForward="@id/search_button"/>
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Search"/>
+
+    <ProgressBar
+        android:id="@+id/loading_spinner"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/search_button"
+        android:focusableInTouchMode="true"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="invisible"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:layout_below="@id/search_query_edit_text"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/item_beer"/>
+
+</RelativeLayout>

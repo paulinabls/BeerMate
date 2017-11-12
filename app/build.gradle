@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    defaultConfig {
+        applicationId 'com.psc.beerMate'
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+ext {
+    recycler_view = '26.0.0'
+    retrofit = '2.3.0'
+    rxjava = '2.0.1'
+    rxjava_adapter = '1.0.0'
+    okhttp = '3.6.0'
+    picasso = '2.5.2'
+
+    junit = '4.12'
+    mockito = '2.8.9'
+    espresso = '3.0.1'
+}
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:recyclerview-v7:$recycler_view"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rxjava_adapter"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    implementation "com.squareup.picasso:picasso:$picasso"
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$espresso", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testImplementation "org.mockito:mockito-core:$mockito"
+}

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.psc.beermate.R;
 import com.psc.beermate.domain.model.BeerInfo;
+import com.psc.beermate.presentation.navigation.Navigator;
 import com.psc.beermate.presentation.presenter.BeerPresenter;
 import com.psc.beermate.presentation.presenter.BeersView;
 import com.psc.beermate.presentation.presenter.base.PresenterFactory;
@@ -30,6 +31,7 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
     private BeerPresenter presenter;
     private View loadingSpinner;
     private static TextWatcher textWatcher;
+    private Navigator navigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
 
         setupRecyclerView();
         setupTopControls();
+        navigator = new Navigator(this);
     }
 
     private void setupTopControls() {
@@ -73,6 +76,7 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
         super.onStart();
         BehaviorSubject<CharSequence> subject = subjectFrom(searchEditText);
         presenter.setObservableQuery(subject);
+        adapter.setOnItemClickListener(item -> presenter.onItemClicked(item));
     }
 
     @Override
@@ -98,6 +102,11 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
     public void displayErrorMessage(final String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG)
                 .show();
+    }
+
+    @Override
+    public void showImage(@NonNull String imageUrl) {
+        navigator.openUrl(imageUrl);
     }
 
     @Override

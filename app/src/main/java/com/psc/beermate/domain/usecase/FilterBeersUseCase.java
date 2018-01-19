@@ -13,10 +13,7 @@ import io.reactivex.functions.Predicate;
 
 public class FilterBeersUseCase implements UseCase<FilterBeersUseCase.Param,Single<List<BeerInfo>>> {
 
-    private final SchedulerProvider schedulerProvider;
-
-    public FilterBeersUseCase(SchedulerProvider schedulerProvider) {
-        this.schedulerProvider = schedulerProvider;
+    public FilterBeersUseCase() {
     }
 
     public static class Param {
@@ -35,9 +32,7 @@ public class FilterBeersUseCase implements UseCase<FilterBeersUseCase.Param,Sing
         return param.list
                 .flatMapIterable(it -> it)
                 .filter(byName(param.query))
-                .toList()
-                .subscribeOn(schedulerProvider.getIoScheduler())
-                .observeOn(schedulerProvider.getMainScheduler());
+                .toList();
     }
 
 

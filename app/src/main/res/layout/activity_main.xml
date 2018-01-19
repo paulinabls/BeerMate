@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.psc.beermate.presentation.view.MainActivity">
+    tools:activity="com.psc.beermate.presentation.view.MainActivity">
 
     <EditText
         android:id="@+id/search_query_edit_text"
@@ -16,22 +16,13 @@
         android:hint="Type here to filter by name"
         android:imeOptions="flagNoExtractUi"
         android:inputType="textNoSuggestions"
-        android:maxLines="1"
-        android:nextFocusForward="@id/search_button"/>
-
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Search"/>
+        android:maxLines="1"/>
 
     <ProgressBar
         android:id="@+id/loading_spinner"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/search_button"
+        android:layout_alignParentRight="true"
         android:focusableInTouchMode="true"
         android:indeterminate="true"
         android:indeterminateTint="@color/colorPrimary"

@@ -21,21 +21,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FilterBeersUseCaseTest {
-    @Mock
-    private SchedulerProvider schedulerProvider;
-    FilterBeersUseCase tested = new FilterBeersUseCase(schedulerProvider);
-    private static final BeerInfo beer1 = getBeerInfo("pale ale");
-    private static final BeerInfo beer2 = getBeerInfo("Porter");
-    private static final BeerInfo beer3 = getBeerInfo("lager");
+
+    FilterBeersUseCase tested = new FilterBeersUseCase();
+    private static final BeerInfo beer1 = createBeerInfo("pale ale");
+    private static final BeerInfo beer2 = createBeerInfo("Porter");
+    private static final BeerInfo beer3 = createBeerInfo("lager");
     private final static List<BeerInfo> BEER_INFOS = Arrays.asList(beer1, beer2, beer3);
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(schedulerProvider.getIoScheduler()).thenReturn(Schedulers.trampoline());
-        when(schedulerProvider.getMainScheduler()).thenReturn(Schedulers.trampoline());
 
-        tested = new FilterBeersUseCase(schedulerProvider);
+        tested = new FilterBeersUseCase();
     }
 
     @Test
@@ -79,19 +76,8 @@ public class FilterBeersUseCaseTest {
         testSubscriber.assertValue(list -> list.get(0).equals(beer3));
     }
 
-    @Test
-    public void execute_usesBothSchedulers() {
-        Observable<List<BeerInfo>> observableList = Observable.just(BEER_INFOS);
-        FilterBeersUseCase.Param param = new FilterBeersUseCase.Param(observableList, "whatever");
-
-        tested.execute(param);
-
-        verify(schedulerProvider).getIoScheduler();
-        verify(schedulerProvider).getMainScheduler();
-    }
-
     @NonNull
-    private static BeerInfo getBeerInfo(String name) {
+    public static BeerInfo createBeerInfo(String name) {
         return new BeerInfo(11, name, "description", "imageUrl");
     }
 }

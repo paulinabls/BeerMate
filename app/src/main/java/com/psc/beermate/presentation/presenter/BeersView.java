@@ -12,4 +12,6 @@ public interface BeersView {
     void hideLoadingSpinner();
 
     void displayErrorMessage(String message);
+
+    void showImage(String imageUrl);
 }

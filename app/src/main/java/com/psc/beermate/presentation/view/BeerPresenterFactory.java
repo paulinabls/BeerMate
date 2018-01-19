@@ -26,6 +26,6 @@ class BeerPresenterFactory implements PresenterFactory<BeerPresenter> {
         SchedulerProvider schedulerProvider = new SchedulerProvider();
         final Repository repository = new PunkRepository(punkService, new BeerMapper(), schedulerProvider);
 
-        return new BeerPresenter(new FetchBeersUseCase(repository), new FilterBeersUseCase(schedulerProvider));
+        return new BeerPresenter(new FetchBeersUseCase(repository), new FilterBeersUseCase(), schedulerProvider);
     }
 }

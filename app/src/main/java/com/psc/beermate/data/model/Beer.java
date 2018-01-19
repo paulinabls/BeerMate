@@ -13,7 +13,7 @@ public class Beer {
     @SerializedName("description")
     private String description;
 
-    @SerializedName("imageUrl")
+    @SerializedName("image_url")
     private String imageUrl;
 
     @SerializedName("first_brewed")

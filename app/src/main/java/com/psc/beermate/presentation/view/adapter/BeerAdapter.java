@@ -1,22 +1,19 @@
 package com.psc.beermate.presentation.view.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.psc.beermate.R;
 import com.psc.beermate.domain.model.BeerInfo;
-import com.psc.beermate.presentation.view.ImageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.ViewHolder> {
 
     private List<BeerInfo> list = new ArrayList<>();
     private Context context;

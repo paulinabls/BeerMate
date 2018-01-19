@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,8 +15,8 @@ import com.psc.beermate.domain.model.BeerInfo;
 import com.psc.beermate.presentation.presenter.BeerPresenter;
 import com.psc.beermate.presentation.presenter.BeersView;
 import com.psc.beermate.presentation.presenter.base.PresenterFactory;
-import com.psc.beermate.presentation.view.adapter.ImageAdapter;
-import com.psc.beermate.presentation.view.adapter.RxEditTextAdapter;
+import com.psc.beermate.presentation.view.adapter.BeerAdapter;
+import com.psc.beermate.presentation.view.adapter.SubjectTextWatcher;
 
 import java.util.List;
 
@@ -25,9 +26,10 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
 
     private static final int LOADER_ID = 0x007;
     private EditText searchEditText;
-    private ImageAdapter adapter;
+    private BeerAdapter adapter;
     private BeerPresenter presenter;
     private View loadingSpinner;
+    private static TextWatcher textWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
     }
 
     private void setupRecyclerView() {
-        adapter = new ImageAdapter();
+        adapter = new BeerAdapter();
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         final RecyclerView recyclerView = findViewById(R.id.recycler_view);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,
@@ -69,8 +71,8 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
     @Override
     protected void onStart() {
         super.onStart();
-        BehaviorSubject<CharSequence> filterSubject = RxEditTextAdapter.from(searchEditText);
-        presenter.setFilter(filterSubject);
+        BehaviorSubject<CharSequence> subject = subjectFrom(searchEditText);
+        presenter.setObservableQuery(subject);
     }
 
     @Override
@@ -95,7 +97,20 @@ public class MainActivity extends BaseActivity<BeerPresenter, BeersView> impleme
     @Override
     public void displayErrorMessage(final String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG)
-             .show();
+                .show();
     }
 
+    @Override
+    protected void onStop() {
+        searchEditText.removeTextChangedListener(textWatcher);
+        super.onStop();
+    }
+
+    private static BehaviorSubject<CharSequence> subjectFrom(@NonNull final EditText searchEditText) {
+        String currentValue = searchEditText.getText().toString();
+        final BehaviorSubject<CharSequence> subject = BehaviorSubject.createDefault(currentValue);
+        textWatcher = new SubjectTextWatcher(subject);
+        searchEditText.addTextChangedListener(textWatcher);
+        return subject;
+    }
 }

@@ -9,13 +9,11 @@ import com.psc.beermate.data.network.PunkApi;
 import com.psc.beermate.data.network.HttpClientProvider;
 import com.psc.beermate.data.network.ServiceProvider;
 import com.psc.beermate.domain.Repository;
-import com.psc.beermate.domain.usecase.GetBeersUseCase;
+import com.psc.beermate.domain.usecase.FetchBeersUseCase;
+import com.psc.beermate.domain.usecase.FilterBeersUseCase;
 import com.psc.beermate.presentation.presenter.BeerPresenter;
 import com.psc.beermate.presentation.presenter.base.PresenterFactory;
 
-import java.io.File;
-
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
 class BeerPresenterFactory implements PresenterFactory<BeerPresenter> {
@@ -25,8 +23,9 @@ class BeerPresenterFactory implements PresenterFactory<BeerPresenter> {
 
         OkHttpClient httpClient = new HttpClientProvider().create(context.getApplicationContext());
         final PunkApi punkService = ServiceProvider.createRestService(httpClient);
-        final Repository repository = new PunkRepository(punkService, new BeerMapper(), new SchedulerProvider());
+        SchedulerProvider schedulerProvider = new SchedulerProvider();
+        final Repository repository = new PunkRepository(punkService, new BeerMapper(), schedulerProvider);
 
-        return new BeerPresenter(new GetBeersUseCase(repository));
+        return new BeerPresenter(new FetchBeersUseCase(repository), new FilterBeersUseCase(schedulerProvider));
     }
 }

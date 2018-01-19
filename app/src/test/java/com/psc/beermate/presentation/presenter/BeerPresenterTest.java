@@ -1,7 +1,9 @@
 package com.psc.beermate.presentation.presenter;
 
+import com.psc.beermate.data.SchedulerProvider;
 import com.psc.beermate.domain.model.BeerInfo;
-import com.psc.beermate.domain.usecase.GetBeersUseCase;
+import com.psc.beermate.domain.usecase.FetchBeersUseCase;
+import com.psc.beermate.domain.usecase.FilterBeersUseCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +16,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -24,10 +24,10 @@ import static org.mockito.Mockito.when;
 
 public class BeerPresenterTest {
 
-    private static final List<BeerInfo> BEER_INFOS = Arrays.asList(getMockedBeerInfo(), getMockedBeerInfo());
-    private static final Observable<List<BeerInfo>> OBSERVABLE_LIST = Observable.just(BEER_INFOS);
+    public static final List<BeerInfo> BEER_INFOS = Arrays.asList(getMockedBeerInfo(), getMockedBeerInfo());
+    public static final Observable<List<BeerInfo>> OBSERVABLE_LIST = Observable.just(BEER_INFOS);
     @Mock
-    private GetBeersUseCase getBeersUseCase;
+    private FetchBeersUseCase fetchBeersUseCase;
     @Mock
     private BeersView view;
     private BeerPresenter tested;
@@ -39,7 +39,7 @@ public class BeerPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        tested = new BeerPresenter(getBeersUseCase);
+        tested = new BeerPresenter(fetchBeersUseCase, new FilterBeersUseCase(mock(SchedulerProvider.class)));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class BeerPresenterTest {
         tested.onViewDetached();
 
         tested.onViewAttached(view);
-//        tested.setFilter(setFilter);
+//        tested.setObservableQuery(setObservableQuery);
         verify(view).setData(BEER_INFOS);
     }
 
@@ -61,7 +61,7 @@ public class BeerPresenterTest {
 //        tested.onViewAttached(view);
 //        TestObserver<List<BeerInfo>> testSubscriber = OBSERVABLE_LIST.test();
 //        final Observable<List<BeerInfo>> delayedObservable = OBSERVABLE_LIST.delay(300, TimeUnit.MILLISECONDS);
-//        when(getBeersUseCase.execute(null)).thenReturn(delayedObservable);
+//        when(fetchBeersUseCase.execute(null)).thenReturn(delayedObservable);
 //
 //        tested.onSearchButtonClicked("");
 //        clearInvocations(view);
@@ -75,7 +75,7 @@ public class BeerPresenterTest {
 
     private void arrangeMocksForSearch() {
         tested.onViewAttached(view);
-        when(getBeersUseCase.execute(null)).thenReturn(OBSERVABLE_LIST);
+        when(fetchBeersUseCase.execute(null)).thenReturn(OBSERVABLE_LIST);
     }
 
     @Test

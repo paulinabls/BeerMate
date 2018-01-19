@@ -1,25 +1,49 @@
 package com.psc.beermate.domain.usecase;
 
-import com.psc.beermate.domain.Repository;
+import android.support.annotation.NonNull;
+
+import com.psc.beermate.data.SchedulerProvider;
 import com.psc.beermate.domain.model.BeerInfo;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Predicate;
 
-public class FilterBeersUseCase implements UseCase<List<BeerInfo>, Observable<List<BeerInfo>>> {
-    private final Repository repository;
-    private static final int PAGE_SIZE = 50;
-    private static final int PAGE_NUMBER = 1;
+public class FilterBeersUseCase implements UseCase<FilterBeersUseCase.Param,Single<List<BeerInfo>>> {
 
-    public FilterBeersUseCase(final Repository repository) {
-        this.repository = repository;
+    private final SchedulerProvider schedulerProvider;
+
+    public FilterBeersUseCase(SchedulerProvider schedulerProvider) {
+        this.schedulerProvider = schedulerProvider;
     }
+
+    public static class Param {
+        private final Observable<List<BeerInfo>> list;
+        private final CharSequence query;
+
+        public Param(Observable<List<BeerInfo>> listObservable, CharSequence query) {
+            this.list = listObservable;
+            this.query = query;
+        }
+    }
+
 
     @Override
-    public Observable<List<BeerInfo>> execute(List<BeerInfo> list) {
-        return repository.getBeers(PAGE_SIZE, PAGE_NUMBER);
+    public Single<List<BeerInfo>> execute(Param param) {
+        return param.list
+                .flatMapIterable(it -> it)
+                .filter(byName(param.query))
+                .toList()
+                .subscribeOn(schedulerProvider.getIoScheduler())
+                .observeOn(schedulerProvider.getMainScheduler());
     }
 
+
+    @NonNull
+    private Predicate<BeerInfo> byName(CharSequence query) {
+        return beer -> beer.getName().toLowerCase().contains(query.toString().toLowerCase());
+    }
 
 }

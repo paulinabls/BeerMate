@@ -7,11 +7,11 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class GetBeersUseCaseTest {
+public class FetchBeersUseCaseTest {
     @Test
     public void execute_shouldCallRepositoryWithSpecificParams() throws Exception {
         final Repository repository = mock(Repository.class);
-        GetBeersUseCase tested = new GetBeersUseCase(repository);
+        FetchBeersUseCase tested = new FetchBeersUseCase(repository);
 
         tested.execute(null);
 

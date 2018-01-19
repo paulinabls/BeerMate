@@ -1,6 +1,6 @@
 //package com.psc.beermate.presentation.model;
 //
-//import com.psc.beermate.domain.usecase.GetBeersUseCase.Param;
+//import com.psc.beermate.domain.usecase.FetchBeersUseCase.Param;
 //
 //import org.junit.Before;
 //import org.junit.Test;

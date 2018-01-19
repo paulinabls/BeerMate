@@ -26,7 +26,6 @@ public class FilterBeersUseCase implements UseCase<FilterBeersUseCase.Param,Sing
         }
     }
 
-
     @Override
     public Single<List<BeerInfo>> execute(Param param) {
         return param.list
@@ -34,7 +33,6 @@ public class FilterBeersUseCase implements UseCase<FilterBeersUseCase.Param,Sing
                 .filter(byName(param.query))
                 .toList();
     }
-
 
     @NonNull
     private Predicate<BeerInfo> byName(CharSequence query) {

@@ -20,10 +20,9 @@ class BeerPresenterFactory implements PresenterFactory<BeerPresenter> {
 
     @Override
     public BeerPresenter create(Context context) {
-
-        OkHttpClient httpClient = new HttpClientProvider().create(context.getApplicationContext());
+        final OkHttpClient httpClient = new HttpClientProvider().create(context.getApplicationContext());
         final PunkApi punkService = ServiceProvider.createRestService(httpClient);
-        SchedulerProvider schedulerProvider = new SchedulerProvider();
+        final SchedulerProvider schedulerProvider = new SchedulerProvider();
         final Repository repository = new PunkRepository(punkService, new BeerMapper(), schedulerProvider);
 
         return new BeerPresenter(new FetchBeersUseCase(repository), new FilterBeersUseCase(), schedulerProvider);

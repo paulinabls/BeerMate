@@ -23,7 +23,6 @@ public class BeerMapperTest {
 
     @Test
     public void map_whenBeerListPassed_returnsItAsBeerInfoList() throws Exception {
-
         Beer beer1 = new Beer(11, "pale ale", "description", "imageUrl", "brewedDate" );
         Beer beer2= new Beer(21, "dark beer", "another description", "second imageUrl", "a brewedDate" );
 

@@ -116,7 +116,6 @@ public class BeerPresenter implements Presenter<BeersView> {
                 .map(query -> filterBeersUseCase.execute(new Param(listObservable, query)))
                 .doOnNext(listSingle -> onListFiltered(listSingle.blockingGet()))
                 .subscribe();
-
     }
 
     private void onListFiltered(List<BeerInfo> filteredList) {

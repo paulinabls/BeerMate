@@ -47,7 +47,6 @@ public class Beer {
     }
 
     public String getFirstBrewed() {
-
         return firstBrewed;
     }
 }

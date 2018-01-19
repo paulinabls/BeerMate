@@ -19,7 +19,8 @@ public class HttpClientProvider {
     private static final int HTTP_READ_TIMEOUT = 10000;
     private static final int HTTP_CONNECT_TIMEOUT = 6000;
     private static final int CACHE_SIZE_BYTES = 2 * 1024 * 1024;
-    private static final int MAX_STALE_SECONDS = 90 * 24 * 3600;
+    private static final int MAX_AGE = 365;
+    private static final int MAX_STALE_SECONDS = 365*24*60*60;
     private static final String CACHE_FILE_NAME = "cacheFile";
 
     private OkHttpClient createWithCache(Cache cache) {
@@ -49,12 +50,8 @@ public class HttpClientProvider {
         public okhttp3.Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             request = request.newBuilder()
-                    .cacheControl(new CacheControl.Builder()
-                            .maxAge(365, TimeUnit.DAYS)
-                            .maxStale(365, TimeUnit.DAYS)
-                            .build())
-//                        .header("Cache-Control",
-//                                "public, only-if-cached, max-stale=" + MAX_STALE_SECONDS)
+                    .header("Cache-Control",
+                            "public, max-stale=" + MAX_STALE_SECONDS)
                     .build();
 
             return chain.proceed(request);

@@ -113,7 +113,9 @@ public class BeerPresenter implements Presenter<BeersView> {
         filterSubscription = observableQuery.debounce(QUERY_CHANGE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
                 .observeOn(schedulerProvider.getMainScheduler())
                 .doOnNext(it -> view.showLoadingSpinner())
+                .observeOn(schedulerProvider.getIoScheduler())
                 .map(query -> filterBeersUseCase.execute(new Param(listObservable, query)))
+                .observeOn(schedulerProvider.getMainScheduler())
                 .doOnNext(listSingle -> onListFiltered(listSingle.blockingGet()))
                 .subscribe();
     }
